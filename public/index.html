@@ -507,15 +507,7 @@
         const input = inputs[index];
         if (!input) return;
 
-        if (result.success && result.newName && result.newName.trim() !== '') {
-          const row = input.closest('tr');
-          const oldNameCell = row.querySelector('.old-name');
-          
-          oldNameCell.textContent = result.newName;
-          input.setAttribute('data-old-name', result.newName);
-          input.value = '';
-          input.placeholder = '输入新文件名';
-        } else if (!result.success && !result.message.includes('跳过')) {
+        if (!result.success && !result.message.includes('跳过')) {
           input.style.borderColor = '#e74c3c';
           input.style.boxShadow = '0 0 0 2px rgba(231, 76, 60, 0.2)';
         }
