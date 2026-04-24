@@ -452,10 +452,8 @@
 
         showResults(data.results);
         showSuccess('重命名操作已完成');
-        
-        setTimeout(() => {
-          loadFiles();
-        }, 1000);
+
+        updateTableAfterRename(data.results);
 
       } catch (error) {
         showError('网络错误: ' + error.message);
@@ -500,6 +498,28 @@
       });
 
       summary.innerHTML = html;
+    }
+
+    function updateTableAfterRename(results) {
+      const inputs = document.querySelectorAll('.new-name-input');
+      
+      results.forEach((result, index) => {
+        const input = inputs[index];
+        if (!input) return;
+
+        if (result.success && result.newName && result.newName.trim() !== '') {
+          const row = input.closest('tr');
+          const oldNameCell = row.querySelector('.old-name');
+          
+          oldNameCell.textContent = result.newName;
+          input.setAttribute('data-old-name', result.newName);
+          input.value = '';
+          input.placeholder = '输入新文件名';
+        } else if (!result.success && !result.message.includes('跳过')) {
+          input.style.borderColor = '#e74c3c';
+          input.style.boxShadow = '0 0 0 2px rgba(231, 76, 60, 0.2)';
+        }
+      });
     }
   </script>
 </body>
